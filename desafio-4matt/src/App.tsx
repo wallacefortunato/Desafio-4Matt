@@ -4,6 +4,7 @@ import { MetricCard } from './components/MetricCard';
 import { ContractsTable } from './components/ContractsTable';
 import { useContractStore } from './store/useContractStore';
 import { ContractFormData } from './types/contract';
+import { Charts } from './components/Charts';
 import { FileText, Users, AlertCircle, DollarSign, Plus } from 'lucide-react';
 import { parseISO } from 'date-fns';
 
@@ -11,10 +12,11 @@ function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const { 
     contracts,
+    filteredContracts,
     getActiveContracts,
     getNearExpiryContracts,
     getTotalContractValue,
-    addContract
+    addContract,
   } = useContractStore();
 
   const handleAddContract = (data: ContractFormData) => {
@@ -68,6 +70,8 @@ function App() {
             icon={DollarSign}
           />
         </div>
+
+        <Charts contracts={filteredContracts.length > 0 ? filteredContracts : contracts} />
 
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-4">Lista de Contratos</h2>

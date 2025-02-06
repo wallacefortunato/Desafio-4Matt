@@ -157,6 +157,7 @@ const rawData = [
 
 interface ContractStore {
   contracts: Contract[];
+  filteredContracts: Contract[];
   addContract: (contract: Omit<Contract, 'id' | 'status'>) => void;
   getActiveContracts: () => Contract[];
   getNearExpiryContracts: () => Contract[];
@@ -169,6 +170,7 @@ export const useContractStore = create<ContractStore>((set, get) => ({
     startDate: parseISO(contract.startDate),
     endDate: parseISO(contract.endDate),
   })),
+  filteredContracts: [],
   
   addContract: (contract) => set(state => ({
     contracts: [...state.contracts, {
