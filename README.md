@@ -2,6 +2,14 @@
 
 # Dashboard de Gerenciamento de Contratos
 
+### Iniciando o projeto
+Para iniciar o projeto, execute o seguinte comando no terminal:
+
+```bash
+npm i
+npm run dev
+```
+
 ### Arquitetura e Gestão do Estado:
 
 - Utilizou Zustand para gerenciamento de estado devido à sua simplicidade e desempenho
@@ -169,3 +177,12 @@ A manutenção é simplificada devido a:
 - Debugging facilitado
 - Inspeção de estado
 - Time-travel debugging
+
+
+### Utilização de IA para Acelerar o Desenvolvimento
+Durante o desenvolvimento deste projeto, diversas ferramentas de IA foram empregadas para otimizar e acelerar o processo, tais como:
+
+Geração de Código: Utilizamos assistentes de código (como o GitHub Copilot) para gerar snippets e sugestões, agilizando a escrita de funções repetitivas e melhorando a produtividade.
+Revisão e Refatoração: Ferramentas baseadas em IA ajudaram na identificação de padrões de código subótimos e sugeriram melhorias para aumentar a eficiência e legibilidade do código.
+Documentação Automatizada: Soluções de IA auxiliaram na criação e padronização da documentação, facilitando a compreensão e manutenção por parte de toda a equipe.
+Suporte e Debug: Chatbots e assistentes virtuais foram consultados para resolver dúvidas técnicas e identificar rapidamente possíveis causas de bugs, reduzindo o tempo de resolução de problemas.
