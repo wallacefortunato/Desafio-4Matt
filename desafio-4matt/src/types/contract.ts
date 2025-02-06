@@ -4,7 +4,7 @@ export interface Contract {
     clientName: string;
     startDate: Date;
     endDate: Date;
-    status: 'Ativo' | 'Expirado' | 'Pendente de Renovação' | 'Próximo ao Vencimento';
+    status: string;
     value: number;
     type: string;
   }
