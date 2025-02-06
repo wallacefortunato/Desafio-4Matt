@@ -29,7 +29,7 @@ http://localhost:5173/
 
 ### Arquitetura e Gestão do Estado:
 
-- Utilizou Zustand para gerenciamento de estado devido à sua simplicidade e desempenho
+- Utilizei o Zustand para gerenciamento de estado devido à sua simplicidade e desempenho
 - Componentes organizados em uma estrutura modular
 - Implementado TypeScript para segurança de tipagem
   
@@ -61,7 +61,7 @@ zustand para gerenciamento de estados
 
 ### Escolha da Solução: Zustand
 
-Para este projeto, optamos por utilizar o Zustand como solução de gerenciamento de estado. O Zustand é uma biblioteca minimalista de gerenciamento de estado para React que oferece uma API simples e intuitiva, mantendo a flexibilidade e poder necessários para aplicações escaláveis.
+Para este projeto, optei por utilizar o Zustand como solução de gerenciamento de estado. O Zustand é uma biblioteca minimalista de gerenciamento de estado para React que oferece uma API simples e intuitiva, mantendo a flexibilidade e poder necessários para aplicações escaláveis.
 
 #### Razões da Escolha
 
@@ -91,7 +91,7 @@ Para este projeto, optamos por utilizar o Zustand como solução de gerenciament
 
 ### Implementação
 
-Nossa implementação do Zustand segue as melhores práticas:
+A implementação do Zustand segue as melhores práticas:
 
 1. **Store Centralizada**
 ```typescript
