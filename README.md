@@ -2,12 +2,29 @@
 
 # Dashboard de Gerenciamento de Contratos
 
-### Iniciando o projeto
-Para iniciar o projeto, execute o seguinte comando no terminal:
+### Pré-requisitos
 
+- [React.js](https://react.dev/) (versão 18 ou superior)
+- [NPM](https://www.npmjs.com/) 
+- [Git](https://git-scm.com/)
+
+### Iniciando o projeto
+Para iniciar o projeto:
+
+1. **Clone o repositório:**
+   ```bash
+   git clone [https://github.com/seuusuario/projeto-exemplo.git](https://github.com/wallacefortunato/Desafio-4Matt.git)
+   cd desafio-4matt
+   code .
+   ```
+2. **Execute o comando no terminal:**
 ```bash
 npm i
 npm run dev
+```
+3. **Abra o navegador no endereço:**
+```
+http://localhost:5173/
 ```
 
 ### Arquitetura e Gestão do Estado:
