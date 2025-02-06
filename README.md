@@ -2,13 +2,13 @@
 
 # Dashboard de Gerenciamento de Contratos
 
-###Arquitetura e Gestão do Estado:
+### Arquitetura e Gestão do Estado:
 
 - Utilizou Zustand para gerenciamento de estado devido à sua simplicidade e desempenho
 - Componentes organizados em uma estrutura modular
 - Implementado TypeScript para segurança de tipagem
   
-###Features:
+### Features:
 
 - Navegação responsiva na barra lateral
 - Cartões de métricas mostrando estatísticas importantes
@@ -16,7 +16,7 @@
 - Formulário modal para adição de novos contratos
 - Filtragem abrangente e visualização de dados
   
-###Biblioteca utilizada:
+### Biblioteca utilizada:
 
 @tanstack/react-table para tabela de dados
 chart.js and react-chartjs-2 para gráficos
@@ -24,7 +24,7 @@ date-fns para manipulação de datas
 lucide-react para icones
 zustand para gerenciamento de estados
 
-###UI/UX:
+### UI/UX:
 
 - Design limpo e moderno com Tailwind CSS
 - Layout responsivo que funciona em todos os tamanhos de tela
