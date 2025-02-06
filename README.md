@@ -13,7 +13,7 @@ Para iniciar o projeto:
 
 1. **Clone o repositório:**
    ```bash
-   git clone [https://github.com/seuusuario/projeto-exemplo.git](https://github.com/wallacefortunato/Desafio-4Matt.git)
+   git clone https://github.com/wallacefortunato/Desafio-4Matt.git
    cd desafio-4matt
    code .
    ```
