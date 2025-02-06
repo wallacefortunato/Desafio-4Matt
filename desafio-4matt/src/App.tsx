@@ -5,6 +5,7 @@ import { ContractsTable } from './components/ContractsTable';
 import { useContractStore } from './store/useContractStore';
 import { ContractFormData } from './types/contract';
 import { Charts } from './components/Charts';
+import { AddContractModal } from './components/AddContractModal';
 import { FileText, Users, AlertCircle, DollarSign, Plus } from 'lucide-react';
 import { parseISO } from 'date-fns';
 
@@ -77,6 +78,12 @@ function App() {
           <h2 className="text-xl font-semibold mb-4">Lista de Contratos</h2>
           <ContractsTable data={contracts} />
         </div>
+
+        <AddContractModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onSubmit={handleAddContract}
+        />
         </main>
     </div>
   );
