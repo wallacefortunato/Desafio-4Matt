@@ -156,45 +156,104 @@ const rawData = [
 ];
 
 interface ContractStore {
-  contracts: Contract[];
-  filteredContracts: Contract[];
-  addContract: (contract: Omit<Contract, 'id' | 'status'>) => void;
-  getActiveContracts: () => Contract[];
-  getNearExpiryContracts: () => Contract[];
-  getTotalContractValue: () => number;
-}
-
-export const useContractStore = create<ContractStore>((set, get) => ({
-  contracts: rawData.map(contract => ({
-    ...contract,
-    startDate: parseISO(contract.startDate),
-    endDate: parseISO(contract.endDate),
-  })),
-  filteredContracts: [],
+    contracts: Contract[];
+    filteredContracts: Contract[];
+    dateRange: {
+      startDate: string;
+      endDate: string;
+    };
+    selectedStatus: string;
+    selectedType: string;
+    addContract: (contract: Omit<Contract, 'id' | 'status'>) => void;
+    getActiveContracts: () => Contract[];
+    getNearExpiryContracts: () => Contract[];
+    getTotalContractValue: () => number;
+    setDateRange: (range: { startDate: string; endDate: string }) => void;
+    setSelectedStatus: (status: string) => void;
+    setSelectedType: (type: string) => void;
+    applyFilters: () => void;
+  }
   
-  addContract: (contract) => set(state => ({
-    contracts: [...state.contracts, {
+  export const useContractStore = create<ContractStore>((set, get) => ({
+    contracts: rawData.map(contract => ({
       ...contract,
-      id: `CT-${(state.contracts.length + 1).toString().padStart(3, '0')}`,
-      status: 'Ativo'
-    }]
-  })),
-
-  getActiveContracts: () => {
-    return get().contracts.filter(contract => contract.status === 'Ativo');
-  },
-
-  getNearExpiryContracts: () => {
-    const thirtyDaysFromNow = new Date();
-    thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
+      startDate: parseISO(contract.startDate),
+      endDate: parseISO(contract.endDate),
+    })),
+    filteredContracts: [],
+    dateRange: {
+      startDate: '',
+      endDate: '',
+    },
+    selectedStatus: '',
+    selectedType: '',
     
-    return get().contracts.filter(contract => 
-      contract.status === 'Ativo' && 
-      contract.endDate <= thirtyDaysFromNow
-    );
-  },
-
-  getTotalContractValue: () => {
-    return get().getActiveContracts().reduce((sum, contract) => sum + contract.value, 0);
-  },
-}));
+    addContract: (contract) => set(state => {
+      const newContract = {
+        ...contract,
+        id: `CT-${(state.contracts.length + 1).toString().padStart(3, '0')}`,
+        status: 'Ativo'
+      };
+      return {
+        contracts: [...state.contracts, newContract],
+        filteredContracts: [...state.filteredContracts, newContract],
+      };
+    }),
+  
+    getActiveContracts: () => {
+      return get().contracts.filter(contract => contract.status === 'Ativo');
+    },
+  
+    getNearExpiryContracts: () => {
+      const thirtyDaysFromNow = new Date();
+      thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
+      
+      return get().contracts.filter(contract => 
+        contract.status === 'Ativo' && 
+        contract.endDate <= thirtyDaysFromNow
+      );
+    },
+  
+    getTotalContractValue: () => {
+      return get().getActiveContracts().reduce((sum, contract) => sum + contract.value, 0);
+    },
+  
+    setDateRange: (range) => {
+      set({ dateRange: range });
+      get().applyFilters();
+    },
+  
+    setSelectedStatus: (status) => {
+      set({ selectedStatus: status });
+      get().applyFilters();
+    },
+  
+    setSelectedType: (type) => {
+      set({ selectedType: type });
+      get().applyFilters();
+    },
+  
+    applyFilters: () => {
+      const { contracts, dateRange, selectedStatus, selectedType } = get();
+      
+      let filtered = [...contracts];
+  
+      if (dateRange.startDate && dateRange.endDate) {
+        const start = parseISO(dateRange.startDate);
+        const end = parseISO(dateRange.endDate);
+        filtered = filtered.filter(contract => 
+          contract.startDate >= start && contract.endDate <= end
+        );
+      }
+  
+      if (selectedStatus) {
+        filtered = filtered.filter(contract => contract.status === selectedStatus);
+      }
+  
+      if (selectedType) {
+        filtered = filtered.filter(contract => contract.type === selectedType);
+      }
+  
+      set({ filteredContracts: filtered });
+    },
+  }));

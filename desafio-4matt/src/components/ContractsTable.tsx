@@ -12,59 +12,60 @@ import { format } from 'date-fns';
 
 const columnHelper = createColumnHelper<Contract>();
 
-const columns = [
-  columnHelper.accessor('id', {
-    header: 'ID',
-    cell: info => info.getValue(),
-  }),
-  columnHelper.accessor('name', {
-    header: 'Nome do Contrato',
-    cell: info => info.getValue(),
-  }),
-  columnHelper.accessor('clientName', {
-    header: 'Cliente/Fornecedor',
-    cell: info => info.getValue(),
-  }),
-  columnHelper.accessor('startDate', {
-    header: 'Data de Início',
-    cell: info => format(info.getValue(), 'dd/MM/yyyy'),
-  }),
-  columnHelper.accessor('endDate', {
-    header: 'Data de Vencimento',
-    cell: info => format(info.getValue(), 'dd/MM/yyyy'),
-  }),
-  columnHelper.accessor('status', {
-    header: 'Status',
-    cell: info => (
-      <span className={`px-2 py-1 rounded-full text-sm ${
-        info.getValue() === 'Ativo' ? 'bg-green-100 text-green-800' :
-        info.getValue() === 'Expirado' ? 'bg-red-100 text-red-800' :
-        info.getValue() === 'Pendente de Renovação' ? 'bg-yellow-100 text-yellow-800' :
-        'bg-blue-100 text-blue-800'
-      }`}>
-        {info.getValue()}
-      </span>
-    ),
-  }),
-  columnHelper.accessor('value', {
-    header: 'Valor',
-    cell: info => new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(info.getValue()),
-  }),
-  columnHelper.accessor('type', {
-    header: 'Tipo',
-    cell: info => info.getValue(),
-  }),
-];
-
 interface ContractsTableProps {
   data: Contract[];
+  onRowClick: (contract: Contract) => void;
 }
 
-export const ContractsTable: React.FC<ContractsTableProps> = ({ data }) => {
+export const ContractsTable: React.FC<ContractsTableProps> = ({ data, onRowClick }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
+
+  const columns = [
+    columnHelper.accessor('id', {
+      header: 'ID',
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('name', {
+      header: 'Nome do Contrato',
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('clientName', {
+      header: 'Cliente/Fornecedor',
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('startDate', {
+      header: 'Data de Início',
+      cell: info => format(info.getValue(), 'dd/MM/yyyy'),
+    }),
+    columnHelper.accessor('endDate', {
+      header: 'Data de Vencimento',
+      cell: info => format(info.getValue(), 'dd/MM/yyyy'),
+    }),
+    columnHelper.accessor('status', {
+      header: 'Status',
+      cell: info => (
+        <span className={`px-2 py-1 rounded-full text-sm ${
+          info.getValue() === 'Ativo' ? 'bg-green-100 text-green-800' :
+          info.getValue() === 'Expirado' ? 'bg-red-100 text-red-800' :
+          info.getValue() === 'Pendente de Renovação' ? 'bg-yellow-100 text-yellow-800' :
+          'bg-blue-100 text-blue-800'
+        }`}>
+          {info.getValue()}
+        </span>
+      ),
+    }),
+    columnHelper.accessor('value', {
+      header: 'Valor',
+      cell: info => new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      }).format(info.getValue()),
+    }),
+    columnHelper.accessor('type', {
+      header: 'Tipo',
+      cell: info => info.getValue(),
+    }),
+  ];
 
   const table = useReactTable({
     data,
@@ -102,7 +103,8 @@ export const ContractsTable: React.FC<ContractsTableProps> = ({ data }) => {
           {table.getRowModel().rows.map(row => (
             <tr
               key={row.id}
-              className="hover:bg-gray-50 border-t border-gray-200"
+              className="hover:bg-gray-50 border-t border-gray-200 cursor-pointer"
+              onClick={() => onRowClick(row.original)}
             >
               {row.getVisibleCells().map(cell => (
                 <td

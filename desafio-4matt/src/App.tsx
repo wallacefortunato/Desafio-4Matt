@@ -1,24 +1,38 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { MetricCard } from './components/MetricCard';
 import { ContractsTable } from './components/ContractsTable';
-import { useContractStore } from './store/useContractStore';
-import { ContractFormData } from './types/contract';
 import { Charts } from './components/Charts';
 import { AddContractModal } from './components/AddContractModal';
+import { ContractDetailsModal } from './components/ContractDetailsModal';
+import { GlobalFilters } from './components/GlobalFilters';
+import { useContractStore } from './store/useContractStore';
 import { FileText, Users, AlertCircle, DollarSign, Plus } from 'lucide-react';
+import { ContractFormData, Contract } from './types/contract';
 import { parseISO } from 'date-fns';
 
 function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [selectedContract, setSelectedContract] = useState<Contract | null>(null);
   const { 
     contracts,
     filteredContracts,
+    dateRange,
+    selectedStatus,
+    selectedType,
     getActiveContracts,
     getNearExpiryContracts,
     getTotalContractValue,
     addContract,
+    setDateRange,
+    setSelectedStatus,
+    setSelectedType,
+    applyFilters
   } = useContractStore();
+
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const handleAddContract = (data: ContractFormData) => {
     addContract({
@@ -31,9 +45,14 @@ function App() {
     });
   };
 
+  const handleRowClick = (contract: Contract) => {
+    setSelectedContract(contract);
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
+      
       <main className="flex-1 p-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Dashboard de Contratos</h1>
@@ -47,36 +66,56 @@ function App() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <MetricCard
-            title="Total de Contratos"
-            value={contracts.length}
-            icon={FileText}
-          />
-          <MetricCard
-            title="Contratos Ativos"
-            value={getActiveContracts().length}
-            icon={Users}
-          />
-          <MetricCard
-            title="Próximos ao Vencimento"
-            value={getNearExpiryContracts().length}
-            icon={AlertCircle}
-          />
-          <MetricCard
-            title="Valor Total (Ativos)"
-            value={new Intl.NumberFormat('pt-BR', {
-              style: 'currency',
-              currency: 'BRL'
-            }).format(getTotalContractValue())}
-            icon={DollarSign}
-          />
+          <div onClick={() => setSelectedStatus('Todos')} className="cursor-pointer">
+            <MetricCard
+              title="Total de Contratos"
+              value={contracts.length}
+              icon={FileText}
+            />
+          </div>
+          <div onClick={() => setSelectedStatus('Ativo')} className="cursor-pointer">
+            <MetricCard
+              title="Contratos Ativos"
+              value={getActiveContracts().length}
+              icon={Users}
+            />
+          </div>
+          <div onClick={() => setSelectedStatus('Próximo ao Vencimento')} className="cursor-pointer">
+            <MetricCard
+              title="Próximos ao Vencimento"
+              value={getNearExpiryContracts().length}
+              icon={AlertCircle}
+            />
+          </div>
+          <div onClick={() => setSelectedStatus('Ativo')} className="cursor-pointer">
+            <MetricCard
+              title="Valor Total (Ativos)"
+              value={new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+              }).format(getTotalContractValue())}
+              icon={DollarSign}
+            />
+          </div>
         </div>
+
+        <GlobalFilters
+          dateRange={dateRange}
+          selectedStatus={selectedStatus}
+          selectedType={selectedType}
+          onDateRangeChange={setDateRange}
+          onStatusChange={setSelectedStatus}
+          onTypeChange={setSelectedType}
+        />
 
         <Charts contracts={filteredContracts.length > 0 ? filteredContracts : contracts} />
 
         <div className="mt-8">
           <h2 className="text-xl font-semibold mb-4">Lista de Contratos</h2>
-          <ContractsTable data={contracts} />
+          <ContractsTable 
+            data={filteredContracts.length > 0 ? filteredContracts : contracts}
+            onRowClick={handleRowClick}
+          />
         </div>
 
         <AddContractModal
@@ -84,7 +123,12 @@ function App() {
           onClose={() => setIsAddModalOpen(false)}
           onSubmit={handleAddContract}
         />
-        </main>
+
+        <ContractDetailsModal
+          contract={selectedContract}
+          onClose={() => setSelectedContract(null)}
+        />
+      </main>
     </div>
   );
 }
