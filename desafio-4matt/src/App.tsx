@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { MetricCard } from './components/MetricCard';
+import { ContractsTable } from './components/ContractsTable';
 import { useContractStore } from './store/useContractStore';
 import { ContractFormData } from './types/contract';
 import { FileText, Users, AlertCircle, DollarSign, Plus } from 'lucide-react';
@@ -66,6 +67,11 @@ function App() {
             }).format(getTotalContractValue())}
             icon={DollarSign}
           />
+        </div>
+
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4">Lista de Contratos</h2>
+          <ContractsTable data={contracts} />
         </div>
         </main>
     </div>
